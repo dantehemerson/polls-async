@@ -3,6 +3,7 @@ version: '3'
 services:
   db:
     image: mongo
+    container_name: pollsmongo
     ports:
       - 27203:27017
     environment:

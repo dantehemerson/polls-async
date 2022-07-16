@@ -18,10 +18,15 @@ export class ChoiceService {
   }
 
   async vote(choiceId: string) {
-    // await this.choiceProducer.incrementCounter(choiceId);
-    const result = await this.choiceProducer.incrementVote(choiceId);
+    const [resultCounter, resultVote] = await Promise.all([
+      this.choiceProducer.incrementCounter(choiceId),
+      await this.choiceProducer.incrementVote(choiceId),
+    ]);
 
-    console.log('Task Created with id: ', { taskid: result.taskId });
+    console.log('Tasks Created with ids: ', {
+      counterTaskId: resultCounter.taskId,
+      counterVoteId: resultVote.taskId,
+    });
 
     return {
       ok: true,
