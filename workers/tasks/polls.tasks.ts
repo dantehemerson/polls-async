@@ -1,17 +1,21 @@
+import { Choice, ChoiceSchema } from '../../src/choice/schemas/choice.schema';
+import { createMongoClient } from '../../src/shared/factories/mongo.connection';
 import { ObjectId } from '../../src/shared/shared.types';
 
 export async function incrementVote(choiceId: ObjectId) {
-  const delayTime = 5000;
+  const mongo = await createMongoClient(process.env.DB_URI);
 
-  await new Promise((resolve) => {
-    setTimeout(resolve, delayTime);
-  });
+  const choiceModel = mongo.model(Choice.name, ChoiceSchema);
+
+  const data = await choiceModel.updateOne(
+    { _id: choiceId },
+    { $inc: { votes: 1 } },
+  );
 
   return {
-    delayTime,
+    data,
     endDate: new Date().toISOString(),
   };
-  console.log('Processing increment vote for ', choiceId);
 }
 
 export function incrementCounter(choiceId: ObjectId) {}
