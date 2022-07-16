@@ -9,7 +9,6 @@ import { CeleryModule } from './celery/celery.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
-      envFilePath: './environments/development.env',
       isGlobal: true,
     }),
     MongooseModule.forRootAsync({

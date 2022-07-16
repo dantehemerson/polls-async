@@ -1,6 +1,6 @@
 import { Global, Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import celery from 'celery-node';
+import { createClient } from 'celery-node';
 import CeleryClient from 'celery-node/dist/app/client';
 import { PollsTasks } from '../../workers/tasks/polls-tasks.enum';
 import { CELERY_CLIENT } from './celery.constants';
@@ -12,10 +12,11 @@ import { CELERY_CLIENT } from './celery.constants';
       provide: CELERY_CLIENT,
       useFactory: (configService: ConfigService) => {
         const brokerUrl = configService.get('BROKER_URL');
-        const backendUrl = configService.get('CELERY_RESULT_BACKEND');
+        const backendUrl = configService.get('BACKEND_URL');
 
-        return celery.createClient(brokerUrl, backendUrl);
+        return createClient(brokerUrl, backendUrl);
       },
+      inject: [ConfigService],
     },
     {
       provide: PollsTasks.IncrementCounter,
@@ -32,5 +33,6 @@ import { CELERY_CLIENT } from './celery.constants';
       inject: [CELERY_CLIENT],
     },
   ],
+  exports: [PollsTasks.IncrementCounter, PollsTasks.IncrementVote],
 })
 export class CeleryModule {}

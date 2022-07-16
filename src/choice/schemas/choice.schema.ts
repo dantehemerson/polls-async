@@ -1,6 +1,8 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ObjectId } from '../../shared/shared.types';
 
+export type ChoiceDocument = Choice & Document;
+
 @Schema({
   timestamps: true,
 })

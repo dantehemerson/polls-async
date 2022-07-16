@@ -1,13 +1,9 @@
 import 'dotenv/config';
-
-import celery from 'celery-node';
+import { createWorker } from 'celery-node';
 import { PollsTasks } from './tasks/polls-tasks.enum';
 import { incrementCounter, incrementVote } from './tasks/polls.tasks';
 
-const worker = celery.createWorker(
-  process.env.BROKER_URL,
-  process.env.CELERY_RESULT_BACKEND,
-);
+const worker = createWorker(process.env.BROKER_URL, process.env.BACKEND_URL);
 
 worker.register(PollsTasks.IncrementVote, incrementVote);
 worker.register(PollsTasks.IncrementCounter, incrementCounter);

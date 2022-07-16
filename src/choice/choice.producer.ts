@@ -12,10 +12,10 @@ export class ChoiceProducer {
   ) {}
 
   async incrementVote(choiceId: string) {
-    return this.incrementCounterTask.applyAsync([choiceId]);
+    return this.incrementVoteTask.applyAsync([choiceId]);
   }
 
   async incrementCounter(choiceId: string) {
-    return this.incrementVoteTask.applyAsync([choiceId]);
+    return this.incrementCounterTask.applyAsync([choiceId]);
   }
 }
