@@ -1,10 +1,21 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { ConfigModule } from '@nestjs/config';
+import { MongooseModule } from '@nestjs/mongoose';
+import { MongooseOptions } from './options/mongoose.options';
+import { QuestionModule } from './question/question.module';
+import { ChoiceModule } from './choice/choice.module';
 
 @Module({
-  imports: [],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [
+    ConfigModule.forRoot({
+      envFilePath: './environments/development.env',
+      isGlobal: true,
+    }),
+    MongooseModule.forRootAsync({
+      useClass: MongooseOptions,
+    }),
+    QuestionModule,
+    ChoiceModule,
+  ],
 })
 export class AppModule {}
