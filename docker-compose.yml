@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+  db:
+    image: mongo
+    ports:
+      - 27203:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: dev
+      MONGO_INITDB_ROOT_PASSWORD: pass
+    volumes:
+      - db-volume:/data/db
+
+  polls-redis:
+    image: redis:4.0
+    container_name: polls-redis
+    env_file:
+      - ./environments/development.env
+    ports:
+      - '6411:6379'
+
+  polls-rabbitmq:
+    image: rabbitmq:3-management
+    container_name: polls-rabbitmq
+    env_file:
+      - ./environments/development.env
+    ports:
+      - '5672:5672'
+      - '15672:15672'
+
+volumes:
+  db-volume: # pointing volume to db
